@@ -1,4 +1,4 @@
-import { Sprite, director, randomRangeInt } from "cc";
+import { EventMouse, Sprite, director, randomRangeInt } from "cc";
 import {
   _decorator,
   Component,
@@ -21,6 +21,8 @@ export class GameMenuController extends Component {
   @property({ type: Sprite })
   private spBird: Sprite[] = [null, null];
 
+  private startGame: boolean = false;
+
   protected onLoad(): void {
     this.initListener();
   }
@@ -30,17 +32,31 @@ export class GameMenuController extends Component {
   }
 
   initListener() {
-    input.on(Input.EventType.KEY_DOWN, this.onClickPlay, this);
+    input.on(Input.EventType.KEY_DOWN, this.onSpacePlay, this);
+    input.on(Input.EventType.MOUSE_UP, this.onClickPlay, this);
   }
 
-  onClickPlay(event: EventKeyboard) {
+  onSpacePlay(event: EventKeyboard) {
     if (event.keyCode === KeyCode.SPACE) {
+      this.playAnim();
+    }
+  }
+
+  onClickPlay(event: EventMouse) {
+    if (event.getButton() === 0) {
+      this.playAnim();
+    }
+  }
+
+  playAnim() {
+    if (this.startGame === false) {
       this.dinoAnim.play();
       this.groundAnim.play();
 
       setTimeout(() => {
         director.loadScene("GamePlay");
       }, 1000);
+      this.startGame = true;
     }
   }
 

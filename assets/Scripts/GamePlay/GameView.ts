@@ -14,12 +14,10 @@ export class GameView extends Component {
     this.restartBtn.node.active = false;
   }
 
-  getResetScore() {
-    this.getHideResult();
-  }
-
   getShowGameOver() {
     this.gameOver.node.active = true;
-    this.restartBtn.node.active = true;
+    setTimeout(() => {
+      this.restartBtn.node.active = true;
+    }, 1000);
   }
 }

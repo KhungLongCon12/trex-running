@@ -3,8 +3,8 @@ const { ccclass, property } = _decorator;
 
 @ccclass("GameModel")
 export class GameModel extends Component {
-  @property({ type: CCFloat, slide: true, max: 1000.0, min: 300.0 })
-  private _speed: number = 300.0;
+  @property({ type: CCFloat })
+  private _speed: number = 400.0;
 
   @property({ type: CCFloat })
   private _spawnIntervalForCactus: number = 3.0;
@@ -12,8 +12,7 @@ export class GameModel extends Component {
   @property({ type: CCFloat })
   private _spawnIntervalForDinoFly: number = 10.0;
 
-  @property({ type: CCFloat })
-  private _startTime: number = 0;
+  private startTime: number = 0;
 
   private _isOver: boolean = false;
 
@@ -25,7 +24,7 @@ export class GameModel extends Component {
   }
 
   public get SpawnIntervalForCactus(): number {
-    this._spawnIntervalForCactus = randomRangeInt(1.0, 20.0);
+    this._spawnIntervalForCactus = randomRangeInt(1.0, 15.0);
     return this._spawnIntervalForCactus;
   }
   public set SpawnIntervalForCactus(value: number) {
@@ -33,7 +32,7 @@ export class GameModel extends Component {
   }
 
   public get SpawnIntervalForDinoFly(): number {
-    this._spawnIntervalForDinoFly = randomRangeInt(15.0, 20.0);
+    this._spawnIntervalForDinoFly = randomRangeInt(10.0, 20.0);
     return this._spawnIntervalForDinoFly;
   }
   public set SpawnIntervalForDinoFly(value: number) {
@@ -48,9 +47,9 @@ export class GameModel extends Component {
   }
 
   public get StartTime(): number {
-    return this._startTime;
+    return this.startTime;
   }
   public set StartTime(value: number) {
-    this._startTime = value;
+    this.startTime = value;
   }
 }

@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, UIOpacity, Animation } from "cc";
+import { _decorator, Component, Label, UIOpacity, Animation, sys } from "cc";
 import { GameModel } from "./GameModel";
 const { ccclass, property } = _decorator;
 
@@ -12,20 +12,27 @@ export class ResultController extends Component {
 
   private highScore: number = 0;
 
-  // resetScore() {
-  //   this.hideResult();
+  private scoreArr: number[] = [];
+  private keyScore: string = "keyScore";
 
-  // }
+  protected start(): void {
+    const getScore = sys.localStorage.getItem(this.keyScore);
 
-  showResult() {
-    this.highScore = Math.max(this.highScore, this.model.StartTime);
-
-    this.highScoreLabel.string = `HI ${this.highScore - 1}`;
-
-    // this.node.active = true;
+    if (getScore) {
+      this.scoreArr = JSON.parse(getScore);
+      localStorage.setItem(this.keyScore, JSON.stringify(this.scoreArr));
+    }
   }
 
-  // hideResult() {
-  //   this.node.active = false;
-  // }
+  showResult() {
+    this.scoreArr.push(this.model.StartTime);
+
+    sys.localStorage.setItem(this.keyScore, JSON.stringify(this.scoreArr));
+    const getScore = JSON.parse(sys.localStorage.getItem(this.keyScore));
+
+    // this.highScore = Math.max(this.highScore, this.model.StartTime);
+    this.highScore = Math.max(...getScore);
+
+    this.highScoreLabel.string = `HI  ${this.highScore - 1}`;
+  }
 }

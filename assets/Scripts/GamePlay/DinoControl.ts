@@ -10,6 +10,9 @@ import {
   Animation,
   SpriteFrame,
   Sprite,
+  Collider2D,
+  Contact2DType,
+  IPhysics2DContact,
 } from "cc";
 import { GameAudio } from "./GameAudio";
 const { ccclass, property } = _decorator;
@@ -19,11 +22,11 @@ export class DinoController extends Component {
   @property({ type: GameAudio })
   private audio: GameAudio;
 
-  // @property({ type: SpriteFrame })
-  // private dinoSprites: SpriteFrame[] = [];
+  @property({ type: SpriteFrame })
+  private dinoFrames: SpriteFrame[] = [];
 
-  // @property({ type: Sprite })
-  // private dino: Sprite | null = null;
+  @property({ type: SpriteFrame })
+  private dinoSprite: Sprite | null = null;
 
   private jumpingGap: number = 200;
   private jumpDuration: number = 0.5;
@@ -43,8 +46,6 @@ export class DinoController extends Component {
     this.dinoAnim = this.getComponent(Animation);
 
     this.initListener();
-
-    //this.dino.spriteFrame = this.dinoSprites[1];
 
     this.resetDino();
   }
@@ -90,15 +91,25 @@ export class DinoController extends Component {
       .start();
   }
 
+  getContactCactus() {
+    let collider = this.node.getComponent(Collider2D);
+
+    if (collider) {
+      collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+    }
+  }
+
+  onBeginContact(
+    selfCollider: Collider2D,
+    otherCollider: Collider2D,
+    contact: IPhysics2DContact | null
+  ) {
+    this.hit = true;
+  }
+
   resetDino() {
     this.dinoLocation = new Vec3(-394, -75, 0);
     this.node.setPosition(this.dinoLocation);
     this.hit = false;
-  }
-
-  getImageWhenDie() {
-    // this.dinoAnim.stop();
-    //this.dino.spriteFrame = this.dinoSprites[0];
-    console.log("change");
   }
 }

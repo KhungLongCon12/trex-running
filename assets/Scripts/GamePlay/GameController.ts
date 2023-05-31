@@ -64,10 +64,8 @@ export class GameController extends Component {
   private score: number = 100;
 
   protected onLoad(): void {
+    console.log("check run");
     this.view.getHideResult();
-  }
-
-  protected start(): void {
     this.getElapsedTime();
   }
 
@@ -129,10 +127,9 @@ export class GameController extends Component {
 
   gameOver() {
     this.audio.onAudioQueue(1);
+
     this.result.showResult();
     this.view.getShowGameOver();
-
-    // this.dino.getImageWhenDie()
 
     this.model.IsOver = true;
 
@@ -140,8 +137,11 @@ export class GameController extends Component {
   }
 
   resetGame() {
-    this.view.getResetScore();
-    this.startGame();
+    console.log("check this reset", this.model.StartTime);
+    this.score = 100;
+    this.model.StartTime = 0;
+    this.model.IsOver = false;
+    this.model.Speed = 300;
   }
 
   groundMoving(value: number) {
@@ -228,25 +228,8 @@ export class GameController extends Component {
     }
   }
 
-  getContactCactus() {
-    let collider = this.dino.getComponent(Collider2D);
-
-    if (collider) {
-      collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-    }
-  }
-
-  onBeginContact(
-    selfCollider: Collider2D,
-    otherCollider: Collider2D,
-    contact: IPhysics2DContact | null
-  ) {
-    console.log("hit");
-    this.dino.hit = true;
-  }
-
   getDinoStruck() {
-    this.getContactCactus();
+    this.dino.getContactCactus();
 
     if (this.dino.hit == true) {
       this.model.IsOver = true;
@@ -256,9 +239,13 @@ export class GameController extends Component {
   }
 
   onClickRestartBtn() {
-    director.resume();
-    this.view.getResetScore();
     this.resetAllPos();
+
+    this.resetGame();
+    this.startGame();
+    director.resume();
+    // setTimeout(() => {
+    // }, 1500);
   }
 
   resetAllPos() {
@@ -270,9 +257,6 @@ export class GameController extends Component {
 
     this.spawnTimerCactus = 0;
     this.spawnTimerDino = 0;
-
-    this.model.StartTime = 0;
-    this.model.IsOver = false;
   }
 
   getIncreaseLevel() {
@@ -286,13 +270,14 @@ export class GameController extends Component {
 
     if (this.model.StartTime === this.score) {
       this.score += 100;
+
       this.audio.onAudioQueue(2);
       scoreAnim.play("ScoreAnim");
+
       this.getIncreaseLevel();
 
       //set condition to play anim
       setTimeout(() => {
-        console.log("ScoreAnim");
         scoreAnim.stop();
       }, 2000);
     }
