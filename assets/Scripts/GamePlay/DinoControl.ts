@@ -25,8 +25,8 @@ export class DinoController extends Component {
   @property({ type: SpriteFrame })
   private dinoFrames: SpriteFrame[] = [];
 
-  @property({ type: SpriteFrame })
-  private dinoSprite: Sprite | null = null;
+  // @property({ type: SpriteFrame })
+  // private dinoSprite: Sprite | null = null;
 
   private jumpingGap: number = 200;
   private jumpDuration: number = 0.5;
@@ -44,20 +44,30 @@ export class DinoController extends Component {
 
   protected onLoad(): void {
     this.dinoAnim = this.getComponent(Animation);
-
     this.initListener();
 
     this.resetDino();
   }
 
+  protected start(): void {
+    this.dinoAnim.play("DinoRunnerAnimation");
+  }
+
   initListener() {
     input.on(Input.EventType.KEY_DOWN, this.onClickJump, this);
+    input.on(Input.EventType.KEY_DOWN, this.onClickDuck, this);
   }
 
   onClickJump(event: EventKeyboard) {
     if (event.keyCode === KeyCode.SPACE && !this.isJump) {
       this.isJump = true;
       this.getJumping();
+    }
+  }
+
+  onClickDuck(event: EventKeyboard) {
+    if (event.keyCode === KeyCode.ARROW_DOWN) {
+      console.log("Duck");
     }
   }
 
@@ -105,11 +115,14 @@ export class DinoController extends Component {
     contact: IPhysics2DContact | null
   ) {
     this.hit = true;
+    this.dinoAnim.stop();
+    this.node.getComponent(Sprite).spriteFrame = this.dinoFrames[0];
   }
 
   resetDino() {
     this.dinoLocation = new Vec3(-394, -75, 0);
     this.node.setPosition(this.dinoLocation);
     this.hit = false;
+    this.dinoAnim.play();
   }
 }

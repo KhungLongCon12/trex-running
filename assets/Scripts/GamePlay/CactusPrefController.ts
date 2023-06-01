@@ -34,7 +34,7 @@ export class CactusPrefController extends Component {
     switch (this.randomNumber) {
       case (this.randomNumber = 0):
         setting.setContentSize(70, 70); // for large Double
-        editingCollider.size = new Size(60, 70);
+        editingCollider.size = new Size(53, 56);
         break;
 
       case (this.randomNumber = 1):
@@ -49,16 +49,16 @@ export class CactusPrefController extends Component {
 
       case (this.randomNumber = 3):
         setting.setContentSize(34, 50); // for small single
-        editingCollider.size = new Size(30, 50);
+        editingCollider.size = new Size(24, 45);
         break;
 
       case (this.randomNumber = 4):
-        setting.setContentSize(80, 50); // for small triple
-        editingCollider.size = new Size(70, 60);
+        setting.setContentSize(70, 50); // for small triple
+        editingCollider.size = new Size(60, 47);
         break;
 
       case (this.randomNumber = 5):
-        setting.setContentSize(100, 70); // for large triple
+        setting.setContentSize(75, 70); // for large triple
         editingCollider.size = new Size(110, 80);
         break;
     }

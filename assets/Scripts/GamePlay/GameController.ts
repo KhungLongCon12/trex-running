@@ -54,7 +54,10 @@ export class GameController extends Component {
   private cactusNodes: Node = null;
 
   @property({ type: Node })
-  private scoreLabel: Node | null = null;
+  private scoreNode: Node | null = null;
+
+  @property({ type: Label })
+  private scoreLabel: Label | null = null;
 
   @property({ type: Node })
   private dinoFlyNodes: Node = null;
@@ -64,19 +67,20 @@ export class GameController extends Component {
   private score: number = 100;
 
   protected onLoad(): void {
-    console.log("check run");
+    director.resume();
     this.view.getHideResult();
     this.getElapsedTime();
   }
 
   // Calculate time form playing
   getElapsedTime(): void {
-    const scoreLabel = this.scoreLabel.getComponent(Label);
-    scoreLabel.string = this.model.StartTime.toString();
+    this.scoreLabel.string = this.model.StartTime.toString();
 
     if (this.model.IsOver === true) {
+      console.log("run this start if 1");
       this.model.StartTime = 0;
     } else {
+      console.log("run this start if 2");
       this.model.StartTime += 1;
       this.scheduleOnce(function () {
         this.getElapsedTime();
@@ -109,11 +113,6 @@ export class GameController extends Component {
     this.cactusMoving(deltaTime);
     this.dinoFlyMoving(deltaTime);
 
-    // update time when playing
-    if (this.model.IsOver === true) {
-      this.model.StartTime = 0;
-    }
-
     //check collider
     if (this.model.IsOver === false) {
       this.getDinoStruck();
@@ -122,22 +121,18 @@ export class GameController extends Component {
 
   startGame() {
     this.view.getHideResult();
-    director.resume();
   }
 
   gameOver() {
     this.audio.onAudioQueue(1);
-
+    this.model.IsOver = true;
     this.result.showResult();
     this.view.getShowGameOver();
-
-    this.model.IsOver = true;
 
     director.pause();
   }
 
   resetGame() {
-    console.log("check this reset", this.model.StartTime);
     this.score = 100;
     this.model.StartTime = 0;
     this.model.IsOver = false;
@@ -231,21 +226,19 @@ export class GameController extends Component {
   getDinoStruck() {
     this.dino.getContactCactus();
 
-    if (this.dino.hit == true) {
-      this.model.IsOver = true;
-
+    if (this.dino.hit === true) {
       this.gameOver();
     }
   }
 
   onClickRestartBtn() {
+    director.resume();
     this.resetAllPos();
 
     this.resetGame();
     this.startGame();
-    director.resume();
-    // setTimeout(() => {
-    // }, 1500);
+
+    //this.getElapsedTime();
   }
 
   resetAllPos() {
@@ -266,7 +259,7 @@ export class GameController extends Component {
   }
 
   getScoreSparkle() {
-    const scoreAnim = this.scoreLabel.getComponent(Animation);
+    const scoreAnim = this.scoreNode.getComponent(Animation);
 
     if (this.model.StartTime === this.score) {
       this.score += 100;

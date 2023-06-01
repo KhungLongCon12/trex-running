@@ -63,7 +63,7 @@ export class GameMenuController extends Component {
   getBirdMenuMoving(value: number) {
     for (let i = 0; i < this.spBird.length; i++) {
       const bird = this.spBird[i].node.getPosition();
-      bird.x -= 400 * value;
+      bird.x -= 250 * value;
 
       if (bird.x <= -750) {
         bird.x = 750;

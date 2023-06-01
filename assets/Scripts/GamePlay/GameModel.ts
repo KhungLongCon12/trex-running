@@ -7,10 +7,10 @@ export class GameModel extends Component {
   private _speed: number = 400.0;
 
   @property({ type: CCFloat })
-  private _spawnIntervalForCactus: number = 3.0;
+  private _spawnIntervalForCactus: number;
 
   @property({ type: CCFloat })
-  private _spawnIntervalForDinoFly: number = 10.0;
+  private _spawnIntervalForDinoFly: number;
 
   private startTime: number = 0;
 
@@ -24,7 +24,7 @@ export class GameModel extends Component {
   }
 
   public get SpawnIntervalForCactus(): number {
-    this._spawnIntervalForCactus = randomRangeInt(1.0, 15.0);
+    this._spawnIntervalForCactus = randomRangeInt(2.0, 15.0);
     return this._spawnIntervalForCactus;
   }
   public set SpawnIntervalForCactus(value: number) {
@@ -32,7 +32,7 @@ export class GameModel extends Component {
   }
 
   public get SpawnIntervalForDinoFly(): number {
-    this._spawnIntervalForDinoFly = randomRangeInt(10.0, 20.0);
+    this._spawnIntervalForDinoFly = randomRangeInt(18.0, 20.0);
     return this._spawnIntervalForDinoFly;
   }
   public set SpawnIntervalForDinoFly(value: number) {
