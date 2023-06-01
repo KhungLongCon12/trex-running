@@ -77,10 +77,8 @@ export class GameController extends Component {
     this.scoreLabel.string = this.model.StartTime.toString();
 
     if (this.model.IsOver === true) {
-      console.log("run this start if 1");
       this.model.StartTime = 0;
     } else {
-      console.log("run this start if 2");
       this.model.StartTime += 1;
       this.scheduleOnce(function () {
         this.getElapsedTime();
@@ -214,6 +212,7 @@ export class GameController extends Component {
 
         if (pos.x <= -700) {
           pos.x = 750;
+          pos.y = randomRangeInt(-10, 30);
         } else {
           dinoFly.position = pos;
         }

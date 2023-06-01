@@ -1368,6 +1368,14 @@
     },
     "dinoFrames": [
       {
+        "__uuid__": "86da2ad6-c7cc-4d5c-8471-2866fbd32621@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
         "__uuid__": "3a8fce90-c0ff-4938-8de5-939020c25a11@f9941",
         "__expectedType__": "cc.SpriteFrame"
       }
@@ -1518,6 +1526,10 @@
     "_clips": [
       {
         "__uuid__": "5e2bad8b-739c-4d4d-9a7e-55c2caaa5a00",
+        "__expectedType__": "cc.AnimationClip"
+      },
+      {
+        "__uuid__": "c804e4a8-a3ac-43ff-b256-96df1808da19",
         "__expectedType__": "cc.AnimationClip"
       }
     ],

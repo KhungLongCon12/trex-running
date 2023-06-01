@@ -2,7 +2,7 @@
   "ver": "1.0.25",
   "importer": "image",
   "imported": true,
-  "uuid": "55cec1e5-a661-4892-86a9-62fc722303c4",
+  "uuid": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "55cec1e5-a661-4892-86a9-62fc722303c4@6c48a",
-      "displayName": "dino-duck1",
+      "uuid": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c@6c48a",
+      "displayName": "dino-duck-1",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "55cec1e5-a661-4892-86a9-62fc722303c4",
+        "imageUuidOrDatabaseUri": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,22 +34,22 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "55cec1e5-a661-4892-86a9-62fc722303c4@f9941",
-      "displayName": "dino-duck1",
+      "uuid": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c@f9941",
+      "displayName": "dino-duck-1",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
         "trimType": "auto",
         "trimThreshold": 1,
         "rotated": false,
-        "offsetX": 1,
-        "offsetY": 0,
-        "trimX": 2,
+        "offsetX": 0,
+        "offsetY": -0.5,
+        "trimX": 0,
         "trimY": 1,
         "width": 118,
         "height": 60,
-        "rawWidth": 120,
-        "rawHeight": 62,
+        "rawWidth": 118,
+        "rawHeight": 61,
         "borderTop": 0,
         "borderBottom": 0,
         "borderLeft": 0,
@@ -83,24 +83,24 @@
             3
           ],
           "uv": [
-            2,
-            61,
-            120,
-            61,
-            2,
-            1,
-            120,
-            1
+            0,
+            60,
+            118,
+            60,
+            0,
+            0,
+            118,
+            0
           ],
           "nuv": [
-            0.016666666666666666,
-            0.016129032258064516,
+            0,
+            0,
             1,
-            0.016129032258064516,
-            0.016666666666666666,
-            0.9838709677419355,
+            0,
+            0,
+            0.9836065573770492,
             1,
-            0.9838709677419355
+            0.9836065573770492
           ],
           "minPos": [
             -59,
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "55cec1e5-a661-4892-86a9-62fc722303c4@6c48a",
+        "imageUuidOrDatabaseUri": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.11",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": true,
     "hasAlpha": true,
-    "redirect": "55cec1e5-a661-4892-86a9-62fc722303c4@f9941"
+    "redirect": "fdb5946b-1c95-4e1e-a5dd-0e93d273666c@f9941"
   }
 }
