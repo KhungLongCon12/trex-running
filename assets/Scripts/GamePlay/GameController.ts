@@ -7,12 +7,13 @@ import {
   Node,
   randomRangeInt,
   director,
-  Collider2D,
   Label,
   PolygonCollider2D,
   Animation,
-  Contact2DType,
-  IPhysics2DContact,
+  UIOpacity,
+  Camera,
+  Color,
+  Collider2D,
 } from "cc";
 import { GameModel } from "./GameModel";
 import { ResultController } from "./ResultController";
@@ -62,13 +63,17 @@ export class GameController extends Component {
   @property({ type: Node })
   private dinoFlyNodes: Node = null;
 
+  @property({ type: Camera })
+  private cameraCanvas: Camera | null = null;
+
   private spawnTimerCactus: number = 0;
   private spawnTimerDino: number = 0;
   private score: number = 100;
+  private isDay: boolean = true;
 
   protected onLoad(): void {
     director.resume();
-    this.view.getHideResult();
+    this.startGame();
     this.getElapsedTime();
   }
 
@@ -89,24 +94,10 @@ export class GameController extends Component {
   protected update(deltaTime: number): void {
     this.getScoreSparkle();
 
+    this.getCheckSpawn(deltaTime);
+
     this.groundMoving(deltaTime);
     this.cloudMoving(deltaTime);
-
-    // Time for cactus spawn
-    this.spawnTimerCactus += deltaTime;
-
-    if (this.spawnTimerCactus >= this.model.SpawnIntervalForCactus) {
-      this.spawnCactus();
-      this.spawnTimerCactus = 0;
-    }
-
-    // time for dino spawn
-    this.spawnTimerDino += deltaTime;
-
-    if (this.spawnTimerDino >= this.model.SpawnIntervalForDinoFly) {
-      this.spawnDinoFly();
-      this.spawnTimerDino = 0;
-    }
 
     this.cactusMoving(deltaTime);
     this.dinoFlyMoving(deltaTime);
@@ -179,11 +170,11 @@ export class GameController extends Component {
 
         pos.x -= this.model.Speed * value;
 
-        if (pos.x <= -1500) {
+        if (pos.x <= -900) {
           cactus.removeFromParent();
           i--;
         } else {
-          cactus.position = pos;
+          cactus.setPosition(pos);
         }
 
         cactus.getComponent(Collider2D).apply();
@@ -194,10 +185,6 @@ export class GameController extends Component {
   spawnDinoFly() {
     const dinoFlyNode = instantiate(this.dinoFlyPrefab);
     this.dinoFlyNodes.addChild(dinoFlyNode);
-    this.dinoFlyNodes
-      .getChildByName("DinoFly")
-      .getComponent(PolygonCollider2D)
-      .apply();
   }
 
   dinoFlyMoving(value: number) {
@@ -208,17 +195,36 @@ export class GameController extends Component {
         const dinoFly = dinoFlyPool[i];
 
         const pos = dinoFly.getPosition();
+
         pos.x -= this.model.Speed * value;
 
         if (pos.x <= -700) {
-          pos.x = 750;
-          pos.y = randomRangeInt(-10, 30);
+          // pos.x = 750;
+          dinoFly.removeFromParent();
+          i--;
         } else {
-          dinoFly.position = pos;
+          // dinoFly.position = pos;
+          dinoFly.setPosition(pos);
         }
 
         dinoFly.getComponent(PolygonCollider2D).apply();
       }
+    }
+  }
+
+  getCheckSpawn(value: number) {
+    // Time for cactus spawn
+    this.spawnTimerCactus += value;
+    if (this.spawnTimerCactus >= this.model.SpawnIntervalForCactus) {
+      this.spawnCactus();
+      this.spawnTimerCactus = 0;
+    }
+
+    // time for dino spawn
+    this.spawnTimerDino += value;
+    if (this.spawnTimerDino >= this.model.SpawnIntervalForDinoFly) {
+      this.spawnDinoFly();
+      this.spawnTimerDino = 0;
     }
   }
 
@@ -236,8 +242,6 @@ export class GameController extends Component {
 
     this.resetGame();
     this.startGame();
-
-    //this.getElapsedTime();
   }
 
   resetAllPos() {
@@ -252,16 +256,32 @@ export class GameController extends Component {
   }
 
   getIncreaseLevel() {
-    this.model.Speed += 100;
-    this.model.SpawnIntervalForCactus -= 0.5;
-    this.model.SpawnIntervalForDinoFly -= 0.1;
+    this.model.Speed += 50;
+    this.spawnTimerCactus += 5.0;
   }
 
   getScoreSparkle() {
     const scoreAnim = this.scoreNode.getComponent(Animation);
+    const scoreUIOpacity = this.scoreNode.getComponent(UIOpacity);
+
+    if (this.isDay) {
+      setTimeout(() => {
+        this.cameraCanvas.clearColor = new Color(0, 0, 0, 255);
+        this.view.changeColorAtNight();
+        this.isDay = false;
+      }, 50000);
+    } else {
+      setTimeout(() => {
+        this.cameraCanvas.clearColor = new Color(223, 223, 223, 255);
+        this.view.changeColorAtMorning();
+        this.isDay = true;
+      }, 50000);
+    }
 
     if (this.model.StartTime === this.score) {
       this.score += 100;
+      console.log("check speed", this.model.Speed);
+      console.log("check SpawnIntervalForCactus", this.spawnTimerCactus);
 
       this.audio.onAudioQueue(2);
       scoreAnim.play("ScoreAnim");
@@ -272,6 +292,8 @@ export class GameController extends Component {
       setTimeout(() => {
         scoreAnim.stop();
       }, 2000);
+    } else {
+      scoreUIOpacity.opacity = 255;
     }
   }
 }

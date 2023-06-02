@@ -1,4 +1,4 @@
-import { EventMouse, Sprite, director, randomRangeInt } from "cc";
+import { EventMouse, EventTouch, Sprite, director, randomRangeInt } from "cc";
 import {
   _decorator,
   Component,
@@ -33,6 +33,7 @@ export class GameMenuController extends Component {
 
   initListener() {
     input.on(Input.EventType.KEY_DOWN, this.onSpacePlay, this);
+    input.on(Input.EventType.TOUCH_START, this.onTouchJump, this);
     input.on(Input.EventType.MOUSE_UP, this.onClickPlay, this);
   }
 
@@ -40,6 +41,9 @@ export class GameMenuController extends Component {
     if (event.keyCode === KeyCode.SPACE) {
       this.playAnim();
     }
+  }
+  onTouchJump(event: EventTouch) {
+    this.playAnim();
   }
 
   onClickPlay(event: EventMouse) {

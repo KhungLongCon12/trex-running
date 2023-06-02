@@ -14,6 +14,7 @@ import {
   Contact2DType,
   IPhysics2DContact,
   UITransform,
+  EventTouch,
 } from "cc";
 import { GameAudio } from "./GameAudio";
 const { ccclass, property } = _decorator;
@@ -54,8 +55,9 @@ export class DinoController extends Component {
 
   initListener() {
     input.on(Input.EventType.KEY_DOWN, this.onClickJump, this);
+    input.on(Input.EventType.TOUCH_START, this.onTouchJump, this);
     input.on(Input.EventType.KEY_DOWN, this.onClickDuck, this);
-    input.on(Input.EventType.KEY_DOWN, this.onClickStand, this);
+    input.on(Input.EventType.KEY_UP, this.onclickNormal, this);
   }
 
   onClickJump(event: EventKeyboard) {
@@ -65,13 +67,21 @@ export class DinoController extends Component {
     }
   }
 
-  onClickStand(event: EventKeyboard) {
+  onTouchJump(event: EventTouch) {
+    if (!this.isJump) {
+      this.isJump = true;
+      this.getJumping();
+    }
+  }
+
+  onclickNormal(event: EventKeyboard) {
     if (!this.canInput) {
       return;
     }
 
-    if (event.keyCode === KeyCode.ARROW_UP && !this.isJump) {
+    if (event.keyCode === KeyCode.ARROW_DOWN && !this.isJump) {
       this.resetDuck();
+      input.on(Input.EventType.KEY_DOWN, this.onClickJump, this);
     }
   }
 
@@ -81,8 +91,8 @@ export class DinoController extends Component {
     }
 
     if (event.keyCode === KeyCode.ARROW_DOWN && !this.isJump) {
-      console.log("duck");
       this.getDinoCrouch();
+      input.off(Input.EventType.KEY_DOWN, this.onClickJump, this);
     }
   }
 

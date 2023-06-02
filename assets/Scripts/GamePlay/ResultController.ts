@@ -13,25 +13,24 @@ export class ResultController extends Component {
   private highScore: number = 0;
 
   private scoreArr: number[] = [];
-  private keyScore: string = "keyScore";
 
   protected start(): void {
-    const getScore = sys.localStorage.getItem(this.keyScore);
-
-    if (getScore) {
-      this.scoreArr = JSON.parse(getScore);
-      localStorage.setItem(this.keyScore, JSON.stringify(this.scoreArr));
+    let scoreArr1 = localStorage.getItem("keyScore");
+    if (scoreArr1) {
+      this.scoreArr = JSON.parse(scoreArr1);
+      localStorage.setItem("keyScore", JSON.stringify(this.scoreArr));
+      this.highScore = Math.max(...this.scoreArr);
+    } else {
+      this.highScore = 1;
     }
+    this.highScoreLabel.string = `HI  ${this.highScore - 1}`;
   }
 
   showResult() {
     this.scoreArr.push(this.model.StartTime);
+    localStorage.setItem("keyScore", JSON.stringify(this.scoreArr));
 
-    sys.localStorage.setItem(this.keyScore, JSON.stringify(this.scoreArr));
-    const getScore = JSON.parse(sys.localStorage.getItem(this.keyScore));
-
-    // this.highScore = Math.max(this.highScore, this.model.StartTime);
-    this.highScore = Math.max(...getScore);
+    this.highScore = Math.max(...this.scoreArr);
 
     this.highScoreLabel.string = `HI  ${this.highScore - 1}`;
   }
