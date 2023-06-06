@@ -15,6 +15,9 @@ import {
   IPhysics2DContact,
   UITransform,
   EventTouch,
+  BoxCollider,
+  Size,
+  BoxCollider2D,
 } from "cc";
 import { GameAudio } from "./GameAudio";
 const { ccclass, property } = _decorator;
@@ -61,7 +64,11 @@ export class DinoController extends Component {
   }
 
   onClickJump(event: EventKeyboard) {
-    if (event.keyCode === KeyCode.SPACE && !this.isJump) {
+    if (
+      (event.keyCode === KeyCode.SPACE && !this.isJump) ||
+      (event.keyCode === KeyCode.ARROW_UP && !this.isJump)
+    ) {
+      input.off(Input.EventType.KEY_DOWN, this.onClickDuck, this);
       this.isJump = true;
       this.getJumping();
     }
@@ -79,7 +86,8 @@ export class DinoController extends Component {
       return;
     }
 
-    if (event.keyCode === KeyCode.ARROW_DOWN && !this.isJump) {
+    if (event.keyCode === KeyCode.ARROW_DOWN) {
+      this.node.getComponent(BoxCollider2D).size = new Size(55, 75);
       this.resetDuck();
       input.on(Input.EventType.KEY_DOWN, this.onClickJump, this);
     }
@@ -90,7 +98,7 @@ export class DinoController extends Component {
       return;
     }
 
-    if (event.keyCode === KeyCode.ARROW_DOWN && !this.isJump) {
+    if (event.keyCode === KeyCode.ARROW_DOWN) {
       this.getDinoCrouch();
       input.off(Input.EventType.KEY_DOWN, this.onClickJump, this);
     }
@@ -100,6 +108,7 @@ export class DinoController extends Component {
     this.dinoAnim.stop();
     this.node.getComponent(UITransform).setContentSize(80, 55);
     this.node.getComponent(Sprite).spriteFrame = this.dinoFrames[1];
+    this.node.getComponent(BoxCollider2D).size = new Size(75, 50);
     this.dinoAnim.play("DinoDuckAnim");
   }
 
@@ -128,6 +137,7 @@ export class DinoController extends Component {
             this.isJump = false;
           })
           .start();
+        input.on(Input.EventType.KEY_DOWN, this.onClickDuck, this);
         this.node.getComponent(UITransform).setContentSize(68, 75);
         this.dinoAnim.play();
       })
@@ -155,7 +165,7 @@ export class DinoController extends Component {
   }
 
   resetDino() {
-    this.dinoLocation = new Vec3(-394, -75, 0);
+    this.dinoLocation = new Vec3(-395, -170, 0);
     this.node.setPosition(this.dinoLocation);
     this.canInput = true;
     this.hit = false;

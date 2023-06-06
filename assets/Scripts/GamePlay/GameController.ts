@@ -149,7 +149,7 @@ export class GameController extends Component {
 
       if (cloud.x <= -320) {
         cloud.x = 780;
-        cloud.y = randomRangeInt(-150, 15);
+        cloud.y = randomRangeInt(-90, 15);
       }
 
       this.spCloud[i].node.setPosition(cloud);
