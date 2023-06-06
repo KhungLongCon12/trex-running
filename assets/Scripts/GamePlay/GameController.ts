@@ -125,7 +125,7 @@ export class GameController extends Component {
     this.score = 100;
     this.model.StartTime = 0;
     this.model.IsOver = false;
-    this.model.Speed = 300;
+    this.model.Speed = 400;
   }
 
   groundMoving(value: number) {
@@ -256,8 +256,9 @@ export class GameController extends Component {
   }
 
   getIncreaseLevel() {
-    this.model.Speed += 50;
-    this.spawnTimerCactus += 5.0;
+    this.model.Speed += 20;
+    // this.spawnTimerCactus += 2.0;
+    // this.model.SpawnIntervalForCactus -= randomRangeInt(1, 2);
   }
 
   getScoreSparkle() {
