@@ -1693,7 +1693,7 @@
   {
     "__type__": "cc.Node",
     "_name": "UICanvas",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 1
     },
@@ -1756,7 +1756,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Camera",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 49
     },
@@ -1843,7 +1843,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Result",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 49
     },
@@ -1897,7 +1897,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Score",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 52
     },
@@ -2078,7 +2078,7 @@
   {
     "__type__": "cc.Node",
     "_name": "HighScore",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 52
     },
@@ -2314,7 +2314,7 @@
   {
     "__type__": "cc.Node",
     "_name": "GameOver",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 49
     },
@@ -2420,7 +2420,7 @@
   {
     "__type__": "cc.Node",
     "_name": "RestartButton",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 49
     },
@@ -2688,10 +2688,6 @@
       "__uuid__": "95b3156d-9b3b-46d2-8988-fed271477483",
       "__expectedType__": "cc.Prefab"
     },
-    "dinoFlyPrefab": {
-      "__uuid__": "4a34427a-dfad-41a5-82b6-c275bee4df70",
-      "__expectedType__": "cc.Prefab"
-    },
     "cactusNodes": {
       "__id__": 29
     },
@@ -2700,9 +2696,6 @@
     },
     "scoreLabel": {
       "__id__": 55
-    },
-    "dinoFlyNodes": {
-      "__id__": 31
     },
     "cameraCanvas": {
       "__id__": 5

@@ -8,7 +8,6 @@ import {
   randomRangeInt,
   director,
   Label,
-  PolygonCollider2D,
   Animation,
   UIOpacity,
   Camera,
@@ -48,8 +47,8 @@ export class GameController extends Component {
   @property({ type: Prefab })
   private cactusPrefabs: Prefab | null = null;
 
-  @property({ type: Prefab })
-  private dinoFlyPrefab: Prefab | null = null;
+  // @property({ type: Prefab })
+  // private dinoFlyPrefab: Prefab | null = null;
 
   @property({ type: Node })
   private cactusNodes: Node = null;
@@ -60,8 +59,8 @@ export class GameController extends Component {
   @property({ type: Label })
   private scoreLabel: Label | null = null;
 
-  @property({ type: Node })
-  private dinoFlyNodes: Node = null;
+  // @property({ type: Node })
+  // private dinoFlyNodes: Node = null;
 
   @property({ type: Camera })
   private cameraCanvas: Camera | null = null;
@@ -70,6 +69,7 @@ export class GameController extends Component {
   private spawnTimerDino: number = 0;
   private score: number = 100;
   private isDay: boolean = true;
+  private timeTemp: number = 500;
 
   protected onLoad(): void {
     director.resume();
@@ -100,7 +100,7 @@ export class GameController extends Component {
     this.cloudMoving(deltaTime);
 
     this.cactusMoving(deltaTime);
-    this.dinoFlyMoving(deltaTime);
+    // this.dinoFlyMoving(deltaTime);
 
     //check collider
     if (this.model.IsOver === false) {
@@ -123,7 +123,7 @@ export class GameController extends Component {
 
   resetGame() {
     this.score = 100;
-    this.model.StartTime = 0;
+
     this.model.IsOver = false;
     this.model.Speed = 400;
   }
@@ -182,35 +182,35 @@ export class GameController extends Component {
     }
   }
 
-  spawnDinoFly() {
-    const dinoFlyNode = instantiate(this.dinoFlyPrefab);
-    this.dinoFlyNodes.addChild(dinoFlyNode);
-  }
+  // spawnDinoFly() {
+  //   const dinoFlyNode = instantiate(this.dinoFlyPrefab);
+  //   this.dinoFlyNodes.addChild(dinoFlyNode);
+  // }
 
-  dinoFlyMoving(value: number) {
-    const dinoFlyPool = this.dinoFlyNodes?.children;
+  // dinoFlyMoving(value: number) {
+  //   const dinoFlyPool = this.dinoFlyNodes?.children;
 
-    if (dinoFlyPool) {
-      for (let i = 0; i < dinoFlyPool.length; i++) {
-        const dinoFly = dinoFlyPool[i];
+  //   if (dinoFlyPool) {
+  //     for (let i = 0; i < dinoFlyPool.length; i++) {
+  //       const dinoFly = dinoFlyPool[i];
 
-        const pos = dinoFly.getPosition();
+  //       const pos = dinoFly.getPosition();
 
-        pos.x -= this.model.Speed * value;
+  //       pos.x -= this.model.Speed * value;
 
-        if (pos.x <= -700) {
-          // pos.x = 750;
-          dinoFly.removeFromParent();
-          i--;
-        } else {
-          // dinoFly.position = pos;
-          dinoFly.setPosition(pos);
-        }
+  //       if (pos.x <= -700) {
+  //         // pos.x = 750;
+  //         dinoFly.removeFromParent();
+  //         i--;
+  //       } else {
+  //         // dinoFly.position = pos;
+  //         dinoFly.setPosition(pos);
+  //       }
 
-        dinoFly.getComponent(PolygonCollider2D).apply();
-      }
-    }
-  }
+  //       dinoFly.getComponent(PolygonCollider2D).apply();
+  //     }
+  //   }
+  // }
 
   getCheckSpawn(value: number) {
     // Time for cactus spawn
@@ -221,11 +221,11 @@ export class GameController extends Component {
     }
 
     // time for dino spawn
-    this.spawnTimerDino += value;
-    if (this.spawnTimerDino >= this.model.SpawnIntervalForDinoFly) {
-      this.spawnDinoFly();
-      this.spawnTimerDino = 0;
-    }
+    // this.spawnTimerDino += value;
+    // if (this.spawnTimerDino >= this.model.SpawnIntervalForDinoFly) {
+    //   this.spawnDinoFly();
+    //   this.spawnTimerDino = 0;
+    // }
   }
 
   getDinoStruck() {
@@ -249,14 +249,22 @@ export class GameController extends Component {
 
     this.cactusNodes.removeAllChildren();
 
-    this.dinoFlyNodes.removeAllChildren();
+    this.model.StartTime = 0;
+    // this.dinoFlyNodes.removeAllChildren();
 
     this.spawnTimerCactus = 0;
-    this.spawnTimerDino = 0;
+    // this.spawnTimerDino = 0;
+
+    this.cameraCanvas.clearColor = new Color(223, 223, 223, 255);
+    this.view.changeColorAtMorning();
   }
 
   getIncreaseLevel() {
-    this.model.Speed += 20;
+    if (this.model.Speed > 590) {
+      this.model.Speed = 445;
+    } else {
+      this.model.Speed += 25;
+    }
     // this.spawnTimerCactus += 2.0;
     // this.model.SpawnIntervalForCactus -= randomRangeInt(1, 2);
   }
@@ -265,18 +273,35 @@ export class GameController extends Component {
     const scoreAnim = this.scoreNode.getComponent(Animation);
     const scoreUIOpacity = this.scoreNode.getComponent(UIOpacity);
 
-    if (this.isDay) {
-      setTimeout(() => {
-        this.cameraCanvas.clearColor = new Color(0, 0, 0, 255);
-        this.view.changeColorAtNight();
-        this.isDay = false;
-      }, 50000);
-    } else {
-      setTimeout(() => {
-        this.cameraCanvas.clearColor = new Color(223, 223, 223, 255);
-        this.view.changeColorAtMorning();
-        this.isDay = true;
-      }, 50000);
+    // if (this.isDay) {
+    //   if (this.model.StartTime === this.timeTemp) {
+    //     this.timeTemp += 500;
+    //     this.cameraCanvas.clearColor = new Color(0, 0, 0, 255);
+    //     this.view.changeColorAtNight();
+    //     this.isDay = false;
+    //   }
+    //   // setTimeout(() => {
+    //   //   this.cameraCanvas.clearColor = new Color(0, 0, 0, 255);
+    //   //   this.view.changeColorAtNight();
+    //   //   this.isDay = false;
+    //   // }, 50000);
+    // } else {
+    //   // this.cameraCanvas.clearColor = new Color(223, 223, 223, 255);
+    //   // this.view.changeColorAtMorning();
+    //   // this.isDay = true;
+    //   setTimeout(() => {
+    //     this.cameraCanvas.clearColor = new Color(223, 223, 223, 255);
+    //     this.view.changeColorAtMorning();
+    //     this.isDay = true;
+    //   }, 50000);
+    // }
+
+    if (this.model.StartTime === this.timeTemp) {
+      console.log("run this");
+      this.timeTemp += 500;
+      this.cameraCanvas.clearColor = new Color(0, 0, 0, 255);
+      this.view.changeColorAtNight();
+      this.isDay = false;
     }
 
     if (this.model.StartTime === this.score) {
